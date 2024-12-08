@@ -8,7 +8,7 @@ echo 'please be patient, this may take a while...'
 pnpm lint ||
 (
     echo 'you have a problem in your code. Check linter
-          Run yarn lint, add changes and try commit again.';
+          Run pnpm lint, add changes and try commit again.';
     false;
 )
  
