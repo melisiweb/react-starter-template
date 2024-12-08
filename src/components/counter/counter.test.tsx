@@ -1,10 +1,19 @@
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
+import { useAppStore } from '@/stores/app-store';
+
+// import { useAppStore } from '@/stores/app-store';
 import { Counter } from './counter';
 
 describe('Counter', () => {
+  beforeEach(() => {
+    useAppStore.getState().reset();
+    jest.clearAllMocks();
+  });
   it('should render Counter component', () => {
     render(<Counter />);
+
     expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
       'Counter',
     );
@@ -16,24 +25,28 @@ describe('Counter', () => {
   });
 
   it('should increment count', async () => {
+    const user = userEvent.setup();
     render(<Counter />);
     const incrementButton = screen.getByRole('button', { name: /Increment/i });
-    incrementButton.click();
+    await user.click(incrementButton);
 
     expect(await screen.findByText('Counter 1')).toBeInTheDocument();
   });
 
   it('should decrement count', async () => {
+    const user = userEvent.setup();
     render(<Counter />);
+
     const incrementButton = screen.getByRole('button', { name: /Increment/i });
     const decrementButton = screen.getByRole('button', { name: /Decrement/i });
-    incrementButton.click();
-    incrementButton.click();
-    incrementButton.click();
-    incrementButton.click();
 
-    decrementButton.click();
-    decrementButton.click();
+    await user.click(incrementButton);
+    await user.click(incrementButton);
+    await user.click(incrementButton);
+    await user.click(incrementButton);
+
+    await user.click(decrementButton);
+    await user.click(decrementButton);
 
     expect(await screen.findByText('Counter 2')).toBeInTheDocument();
   });

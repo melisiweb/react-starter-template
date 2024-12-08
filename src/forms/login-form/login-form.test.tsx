@@ -29,8 +29,8 @@ describe('LoginForm', () => {
     const emailInput = screen.getByPlaceholderText('Email');
     const submitBtn = screen.getByRole('button', { name: /Login/i });
 
-    user.type(emailInput, 'invalid-email');
-    submitBtn.click();
+    await user.type(emailInput, 'invalid-email');
+    await user.click(submitBtn);
 
     const emailError = await screen.findByText('Invalid email');
     expect(emailError).toBeInTheDocument();
@@ -40,11 +40,13 @@ describe('LoginForm', () => {
     const user = userEvent.setup();
     render(<LoginForm onLogin={onLogin} />);
 
+    const emailInput = screen.getByPlaceholderText('Email');
     const passwordInput = screen.getByPlaceholderText('Password');
     const submitBtn = screen.getByRole('button', { name: /Login/i });
 
-    user.type(passwordInput, '123');
-    submitBtn.click();
+    await user.type(emailInput, 'correct@email.com');
+    await user.type(passwordInput, '123');
+    await user.click(submitBtn);
 
     const passwordError = await screen.findByText(
       'String must contain at least 6 character(s)',

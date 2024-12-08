@@ -3,6 +3,10 @@ import { MemoryRouter, Route, Routes } from 'react-router-dom';
 
 import { RootLayout } from './root-layout';
 
+jest.mock('@/providers', () => ({
+  QueryProvider: jest.fn(({ children }) => <div>{children}</div>),
+}));
+
 function TestComponent() {
   return (
     <div>
@@ -17,7 +21,7 @@ describe('RootLayout.tsx', () => {
       <MemoryRouter initialEntries={['/']}>
         <Routes>
           <Route element={<RootLayout />}>
-            <Route path="/" element={<TestComponent />} />
+            <Route index element={<TestComponent />} />
           </Route>
         </Routes>
       </MemoryRouter>,

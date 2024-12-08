@@ -2,12 +2,21 @@ import { create } from 'zustand';
 
 type State = {
   count: number;
+};
+
+type Actions = {
+  reset: () => void;
   increment: () => void;
   decrement: () => void;
 };
 
-export const useAppStore = create<State>((set) => ({
+const initialState: State = {
   count: 0,
+};
+
+export const useAppStore = create<State & Actions>((set) => ({
+  ...initialState,
   increment: () => set((state) => ({ count: state.count + 1 })),
   decrement: () => set((state) => ({ count: state.count - 1 })),
+  reset: () => set(initialState),
 }));
